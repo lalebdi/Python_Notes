@@ -86,3 +86,4 @@ list_original = [ 1, 2, 3, 4, 5, 6, 7 ]
 # going to create a new list with the square numbers of the above
 list_square = [i*i for i in list_original]
 print(list_square)
+
