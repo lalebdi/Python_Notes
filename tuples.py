@@ -89,3 +89,5 @@ import timeit
 
 print(timeit.timeit(stmt="[0, 1, 2, 3, 4, 5]", number=1_000_000)) # the _ is like a comma for easy number readablitiy
 print(timeit.timeit(stmt="(0, 1, 2, 3, 4, 5)", number=1_000_000))
+
+
