@@ -60,4 +60,31 @@ for p in processes:
 for p in processes:
     p.join()
 
-print("ended")
+print("Ended Processing")
+
+# Threads
+from threading import Thread
+import os
+
+def square_numbers2():
+    for i in range(100):
+        i * i
+
+threads = []
+num_threads = 10
+
+
+# create processes
+for i in range(num_processes):
+    t = Thread(target= square_numbers)  #if the function in the target has parameters, you have to pass args argument in the Processes and the data (the value) should be in a tuple.
+    threads.append(t)
+
+# start
+for t in threads:
+    t.start()
+
+# join
+for t in threads:
+    t.join()
+
+print("ended threads")
