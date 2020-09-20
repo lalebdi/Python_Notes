@@ -1,36 +1,26 @@
-from multiprocessing import Process, Value, Array, Lock
-from multiprocessing import Queue # <-- a Queue follow a linear dat principle that processes first come first served 
-import time
-import os
-
-def square(numbers, queue):
-    for i in numbers:
-        queue.put(i*i)
+from multiprocessing import Pool
 
 
-def make_negative(numbers, queue):
-    for i in numbers:
-        queue.put(-1 * i)
+# Process Pool: can be used to manage multiple processes. So, a process pool object controls a pool of work processes to which jobs can be submitted and it can manage processes and split data into smaller chuncks that be be managed in parallel by different processes
+# most common methods are the map, apply, join and close
+
+def cube(number):
+    return number * number * number
 
 
 if __name__ == "__main__":
 
-    numbers = range(1, 6)
-    q = Queue()
+    numbers = range(10)
+    pool = Pool()
 
-    p1 = Process(target= square, args = (numbers, q))
-    p2 = Process(target= make_negative, args = (numbers, q))
+    result = pool.map(cube, numbers) # this will automatically allocate the max number of processes for you and create different processes. So, this will create a s many processes occur in the machine and then it will split the iterable (numbers) into equal sized chucks and submit this function (cube) which is executed in parallel by different processes. 
+#  to have one function executed by the pool use "pool.apply(cube,nubers[0])"
 
-# starting here
-    p1.start()
-    p2.start()
-# joining --> see the comments below for the explanation
+    pool.close() # close should be called before the join
+    # below we want to wait for the pool to prcoess all the calsulation and return the results
+    pool.join()
+    print(result)
 
-    p1.join()
-    p2.join()
-
-    while not q.empty():
-        print(q.get())
 
 #     # with a share value:
 #     from multiprocessing import Process, Value, Array, Lock
@@ -107,3 +97,38 @@ if __name__ == "__main__":
 #     p2.join()
 
 #     print("Array at beginning is", shared_array[:]) # you will get a different number everytime you runs this because the race condition happenened. to prevent it use a lock
+
+# # Queue:
+# from multiprocessing import Queue # <-- a Queue follow a linear dat principle that processes first come first served 
+# import time
+# import os
+
+
+# def square(numbers, queue):
+#     for i in numbers:
+#         queue.put(i*i)
+
+
+# def make_negative(numbers, queue):
+#     for i in numbers:
+#         queue.put(-1 * i)
+
+
+# if __name__ == "__main__":
+
+#     numbers = range(1, 6)
+#     q = Queue()
+
+#     p1 = Process(target= square, args = (numbers, q))
+#     p2 = Process(target= make_negative, args = (numbers, q))
+
+# # starting here
+#     p1.start()
+#     p2.start()
+# # joining --> see the comments below for the explanation
+
+#     p1.join()
+#     p2.join()
+
+#     while not q.empty():
+#         print(q.get())
