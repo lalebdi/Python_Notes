@@ -1,4 +1,4 @@
-from multiprocessing import Process, Value, Array
+from multiprocessing import Process, Value, Array, Lock
 import time
 import os
 
@@ -6,20 +6,25 @@ import os
 # 1- Value
 # 2- Array
 
-def add_100(number):
+def add_100(number, lock):
     for i in range(100):
         time.sleep(0.01)
-        number.value += 1
-
-
+        with lock:
+            number.value += 1
+# or
+        # lock.acquire()
+        # number.value += 1
+        # lock.release()
 
 if __name__ == "__main__":
+
+    lock = Lock()
     shared_number = Value('i', 0) # takes 2 arguments. 1- is the data type as a string (here its an integer as a string). 2- a starting value.
     print("Number at beginning is", shared_number.value)
 
     # now creating 2 processes that should modify the shared number
-    p1 = Process(target= add_100, args = (shared_number,))
-    p2 = Process(target= add_100, args = (shared_number,))
+    p1 = Process(target= add_100, args = (shared_number,lock))
+    p2 = Process(target= add_100, args = (shared_number, lock))
 
 # we start the processes
     p1.start()
