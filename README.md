@@ -1,2 +1,5 @@
-# Python_Notes
-This is Python notes
+# Intermediate Python Notes
+
+
+Hi, Thanks for checking this out.
+
