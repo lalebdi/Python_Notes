@@ -40,4 +40,3 @@ print(customers_b[0])
 # after envoking the __str__method:
 print(customers_b[0])
 
-# continue here tomorrow
